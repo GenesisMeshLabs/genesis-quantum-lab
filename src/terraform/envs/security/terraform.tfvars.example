@@ -1,0 +1,4 @@
+aws_region         = "eu-north-1"
+audit_bucket_name  = "meta-quantum-harvest-audit-logs-CHANGE-ME"
+config_bucket_name = "meta-quantum-harvest-config-CHANGE-ME"
+alert_email        = "security-alerts@example.org"
