@@ -1,3 +1,8 @@
 aws_region       = "eu-north-1"
 environment_name = "mqh-research-a"
 azs              = ["eu-north-1a", "eu-north-1b"]
+
+# Phase 2 additions — all optional, default to the safe/off setting shown here.
+enable_network_firewall = false # true routes private-subnet egress through an inspection-tier domain allow-list
+deploy_test_database    = false # true provisions an RDS Postgres instance for synthetic lab data only
+deploy_dashboard        = true  # CloudWatch dashboard summarizing this account's network/app/db signals

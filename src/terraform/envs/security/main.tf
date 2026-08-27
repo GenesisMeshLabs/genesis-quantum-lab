@@ -16,3 +16,11 @@ module "detection" {
   alert_email        = var.alert_email
   tags               = { Phase = "2-lab-infrastructure" }
 }
+
+module "dashboard" {
+  source = "../../modules/dashboards"
+
+  name                      = "meta-quantum-harvest-security"
+  region                    = var.aws_region
+  guardduty_event_rule_name = module.detection.guardduty_event_rule_name
+}

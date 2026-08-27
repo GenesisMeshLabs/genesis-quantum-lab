@@ -90,16 +90,30 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-# All private-subnet egress routes through the inspection tier's NAT Gateway,
-# so traffic can be logged/inspected before leaving the VPC.
+# Private-subnet egress: routed directly to NAT by default, or through the
+# Network Firewall endpoint in the inspection tier when
+# enable_network_firewall = true (so traffic can be allow-listed/inspected
+# before leaving the VPC). See modules/network-firewall.
 resource "aws_route_table" "private" {
   count  = local.az_count
   vpc_id = aws_vpc.this.id
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.this[count.index].id
+
+  dynamic "route" {
+    for_each = var.enable_network_firewall ? [] : [1]
+    content {
+      cidr_block     = "0.0.0.0/0"
+      nat_gateway_id = aws_nat_gateway.this[count.index].id
+    }
   }
+
   tags = merge(var.tags, { Name = "${var.name}-private-rt-${var.azs[count.index]}" })
+}
+
+resource "aws_route" "private_via_firewall" {
+  count                  = var.enable_network_firewall ? local.az_count : 0
+  route_table_id         = aws_route_table.private[count.index].id
+  destination_cidr_block = "0.0.0.0/0"
+  vpc_endpoint_id        = module.firewall[0].firewall_endpoint_by_az[var.azs[count.index]]
 }
 
 resource "aws_route_table_association" "private" {
@@ -112,6 +126,35 @@ resource "aws_route_table_association" "management" {
   count          = local.az_count
   subnet_id      = aws_subnet.management[count.index].id
   route_table_id = aws_route_table.private[count.index].id
+}
+
+# Inspection subnets forward on to NAT after the firewall has evaluated the
+# traffic (only created when the firewall is enabled).
+resource "aws_route_table" "inspection" {
+  count  = var.enable_network_firewall ? local.az_count : 0
+  vpc_id = aws_vpc.this.id
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = aws_nat_gateway.this[count.index].id
+  }
+  tags = merge(var.tags, { Name = "${var.name}-inspection-rt-${var.azs[count.index]}" })
+}
+
+resource "aws_route_table_association" "inspection" {
+  count          = var.enable_network_firewall ? local.az_count : 0
+  subnet_id      = aws_subnet.inspection[count.index].id
+  route_table_id = aws_route_table.inspection[count.index].id
+}
+
+module "firewall" {
+  count  = var.enable_network_firewall ? 1 : 0
+  source = "../network-firewall"
+
+  name                  = var.name
+  vpc_id                = aws_vpc.this.id
+  inspection_subnet_ids = { for i in range(local.az_count) : var.azs[i] => aws_subnet.inspection[i].id }
+  domain_allow_list     = var.network_firewall_domain_allow_list
+  tags                  = var.tags
 }
 
 # --- Security groups: no direct SSH ingress anywhere (Systems Manager only) ---
