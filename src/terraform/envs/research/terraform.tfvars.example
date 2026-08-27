@@ -1,0 +1,3 @@
+aws_region       = "eu-north-1"
+environment_name = "mqh-research-a"
+azs              = ["eu-north-1a", "eu-north-1b"]

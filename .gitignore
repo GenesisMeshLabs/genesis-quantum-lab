@@ -1,1 +1,22 @@
 /data
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+override.tf
+override.tf.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# App
+node_modules/
+.env
+*.log

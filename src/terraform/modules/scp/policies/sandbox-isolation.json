@@ -1,0 +1,37 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyVpcPeeringOutsideSandbox",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:CreateVpcPeeringConnection",
+        "ec2:AcceptVpcPeeringConnection"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyTransitGatewayAttachment",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:CreateTransitGatewayVpcAttachment",
+        "ec2:AcceptTransitGatewayVpcAttachment"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "DenyDirectInternetSsh",
+      "Effect": "Deny",
+      "Action": ["ec2:AuthorizeSecurityGroupIngress"],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "ec2:cidrBlock": "0.0.0.0/0"
+        },
+        "NumericEquals": {
+          "ec2:FromPort": "22"
+        }
+      }
+    }
+  ]
+}

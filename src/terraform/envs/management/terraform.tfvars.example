@@ -1,0 +1,8 @@
+aws_region          = "eu-north-1"
+create_organization = false # set true only on a brand-new payer account
+root_email_domain   = "example.org"
+
+# Fill these in AFTER enabling IAM Identity Center once in the console
+# (Organizations > Services > IAM Identity Center > Enable):
+identity_center_instance_arn      = ""
+identity_center_identity_store_id = ""
