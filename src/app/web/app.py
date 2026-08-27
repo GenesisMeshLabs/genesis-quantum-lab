@@ -3,7 +3,7 @@ Synthetic lab web application — Phase 2/3 "Lab Workloads".
 Ref: 02-Cloud-Infrastructure.md, 06-Roadmap.md (Week 13-16).
 
 This is the "realistic but synthetic application stack" described in
-swedish-government-aws-playground-proposal.md's Simulated Application Layer:
+02-Cloud-Infrastructure.md "Phase 3: Lab Workloads":
 a web frontend + API + auth flow + synthetic user records + structured
 telemetry, all backed by generated data only. It has NO connection to any
 real user, company, or production system, and must only ever be deployed

@@ -5,7 +5,7 @@
 # The sandbox-isolation SCP is attached only to the Sandbox OU, enforcing that
 # intentionally-vulnerable lab workloads can never bridge into other accounts —
 # this is the technical control behind the "lab-only, no external targets" rule
-# in swedish-government-aws-playground-proposal.md.
+# in 01-Executive-Summary.md "Scope & Boundaries".
 
 locals {
   baseline_policies = {

@@ -1,9 +1,9 @@
 # meta-quantum-harvest — implementation
 
 This directory turns the proposal in the repository root (start at
-[`00-INDEX.md`](../00-INDEX.md), full plan in
-[`swedish-government-aws-playground-proposal.md`](../swedish-government-aws-playground-proposal.md))
-into working code: Terraform for the AWS foundation, a synthetic lab
+[`00-INDEX.md`](../00-INDEX.md), full plan across `01-Executive-Summary.md`
+through `08-Success-Metrics.md`) into working code: Terraform for the AWS
+foundation, a synthetic lab
 application, and the Phase 3 research modules. Everything here targets the
 "lab-only, no external targets" scope defined in the proposal — see that
 document's "What This Is Not" and "Prohibited Experiment Examples" sections
@@ -36,7 +36,8 @@ src/
 │   ├── bootstrap.sh             guarded terraform init/plan/apply wrapper
 │   └── validate_deployment.sh   read-only check against the Phase 1 checklist
 └── docs/
-    └── IMPLEMENTATION-STATUS.md  what's built vs. still manual/pending, and deploy order
+    ├── IMPLEMENTATION-STATUS.md  what's built vs. still manual/pending, and deploy order
+    └── THREAT-MODEL.md           harvest-now-decrypt-later threat this repo's PQC research mitigates
 ```
 
 ## Quick start
