@@ -29,11 +29,11 @@ proposal."
 | Security Hub (CIS + NIST 800-53) | ✅ Code ready | `terraform/modules/detection` |
 | AWS Config + managed rules | ✅ Code ready | `terraform/modules/detection` |
 | Alerting (SNS + EventBridge) | ✅ Code ready | `terraform/modules/detection` |
-| Network Firewall (inspection tier) | ⬜ Not yet implemented | subnet reserved in `terraform/modules/networking`, rules TBD |
+| Network Firewall (inspection tier) | ✅ Code ready | `terraform/modules/network-firewall` (domain allow-list, STRICT_ORDER stateful rule group, `aws:drop_strict` default; wired into `modules/networking` via `enable_network_firewall`, routes private-subnet egress through the inspection tier) |
 | Synthetic web application | ✅ Built & tested locally | `app/web` |
 | ECS Fargate deployment | ✅ Code ready (needs image pushed to ECR) | `app/infra` |
-| Test database (RDS) | ⬜ Not yet implemented | — |
-| SIEM / CloudWatch dashboards | ⬜ Not yet implemented | GuardDuty findings already routed to SNS |
+| Test database (RDS) | ✅ Code ready | `terraform/modules/database` (Postgres, encrypted, private-subnet only, RDS-managed Secrets Manager master credential, synthetic data only — wired into `envs/research` via `deploy_test_database`) |
+| SIEM / CloudWatch dashboards | ✅ Code ready | `terraform/modules/dashboards` (CloudWatch dashboard from native metrics + Logs Insights: GuardDuty→EventBridge invocations in `envs/security`; VPC Flow Logs rejects, Network Firewall alerts, ALB/ECS/RDS metrics in `envs/research`) |
 
 ## Phase 3 — Research & Testing (Weeks 17–24)
 

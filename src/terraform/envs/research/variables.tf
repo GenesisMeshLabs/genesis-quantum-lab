@@ -24,3 +24,21 @@ variable "container_image" {
   type        = string
   default     = ""
 }
+
+variable "enable_network_firewall" {
+  description = "Deploy AWS Network Firewall in the inspection tier with a domain allow-list, and route private-subnet egress through it."
+  type        = bool
+  default     = false
+}
+
+variable "deploy_test_database" {
+  description = "Deploy the RDS test database (synthetic data only) for this research account."
+  type        = bool
+  default     = false
+}
+
+variable "deploy_dashboard" {
+  description = "Deploy a CloudWatch dashboard summarizing this account's network/app/db signals."
+  type        = bool
+  default     = true
+}
